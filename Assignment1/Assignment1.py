@@ -49,7 +49,7 @@ print(iris.head())
 #9. Group dataFrame by the "Species" column. Make a histogram of the same.
 sp = iris.groupby('Species')
 plt.figure();
-sp.plot.hist(alpha=0.5)
+sp.plot.hist(alpha=0.5,bins=20)
 plt.show()
 
 #10 .Find the deviation of length for ‘SepalLengthCm’ from the average
@@ -57,7 +57,15 @@ deav = iris['SepalLengthCm'].std()
 print(deav)
 
 #11 . Find correlation between columns and display columns with more than 70% percent correlation (either positive or negative).
+cor=iris.corr()
+c = []
 
+for i in features:
+    for j in features:
+        if (abs(cor[i][j]) > 0.7) and (i != j):
+            c.append(i)
+print("Columns with >70%")
+print(np.unique(c))
 
 #12. Impute missing values if present using mean of the dataset.
 print(iris.isnull())
