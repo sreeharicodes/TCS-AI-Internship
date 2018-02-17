@@ -23,15 +23,25 @@ odd = odd.reshape(2,5)
 print(odd)
 print("Log of each element")
 print(np.log(odd))
-# print("3.Create a function which creates an n×n random array. Subtract the average of each row of the matrix ")
-# m = input("Enter n >> ")
-# m = int(m)
-# l = []
-# def avg_mat(mat,m):
-#     for k in range(0,m)
-#         avg = 
-# array = np.random.random(m*m)
-# print(array)
+print("3.Create a function which creates an n×n random array. Subtract the average of each row of the matrix ")
+def avg_each_row():
+    m = input("Enter n =")
+    m = int(m)
+    lim = m*m
+    ar = np.random.randint(0,100,lim)
+    ar = ar.reshape(m,m)
+    print("before")
+    print(ar)
+    np.set_printoptions(precision=6, suppress=True)
+    row_means = np.mean(ar, axis=1)
+    for i in range(0,m):
+        ar[i]=ar[i]-row_means[i]
+    np.set_printoptions(precision=6, suppress=True)
+    print("After subtraction")
+    print(ar)
+
+avg_each_row()
+
 print("4.Create a function which creates an n×n random array. Write a program to find the nearest value from a given value in the array.")
 m = input("Enter n =")
 m = int(m)
