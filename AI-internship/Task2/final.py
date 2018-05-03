@@ -84,13 +84,13 @@ def featureselection(df):
     Y = df['click']
     X_ = df[X]
     X_train,X_test,y_train,y_test=train_test_split(X_,Y,test_size=0.20,random_state=5)
-    ## Import the random forest model.
+    #Import the random forest model.
     from sklearn.ensemble import RandomForestClassifier 
-    ## instantiates the model. 
+    #instantiates the model. 
     rf = RandomForestClassifier() 
-    ## Fit the model on  training data.
+    #Fit the model on  training data.
     rf.fit(X_train, y_train) 
-    ## And score it on  testing data.
+    #And score it on  testing data.
     rf.score(X_test, y_test)
     feature_importances = pd.DataFrame(rf.feature_importances_,index = X_train.columns,columns=['importance']).sort_values('importance',ascending=False)
     features = list(feature_importances.index)
@@ -120,11 +120,11 @@ def model(model,features_train,features_test,labels_train,labels_test):
     print('accuracy :', accuracy)
     print("\n")
     print('cross validationscore :', accuracy)
-    fig= plt.figure(figsize=(6,3))# to plot the graph
-    print("TP",cnf_matrix[1,1,]) # no of fraud transaction which are predicted fraud
-    print("TN",cnf_matrix[0,0]) # no. of normal transaction which are predited normal
-    print("FP",cnf_matrix[0,1]) # no of normal transaction which are predicted fraud
-    print("FN",cnf_matrix[1,0]) # no of fraud Transaction which are predicted normal
+    fig= plt.figure(figsize=(6,3))
+    print("TP",cnf_matrix[1,1,]) 
+    print("TN",cnf_matrix[0,0]) 
+    print("FP",cnf_matrix[0,1]) 
+    print("FN",cnf_matrix[1,0]) 
     sns.heatmap(cnf_matrix,cmap="coolwarm_r",annot=True,linewidths=0.5)
     plt.title("Confusion_matrix")
     plt.xlabel("Predicted_class")
@@ -133,8 +133,7 @@ def model(model,features_train,features_test,labels_train,labels_test):
     print("\n----------Classification Report------------------------------------")
     print(classification_report(labels_test,pred))
 
-def data_prepration(x): # preparing data for training and testing as we are going to use different data 
-    #again and again so make a function
+def data_prepration(x):
     x_features= x.ix[:,x.columns != "click"]
     x_labels=x.ix[:,x.columns=="click"]
     x_features_train,x_features_test,x_labels_train,x_labels_test = train_test_split(x_features,x_labels,test_size=0.2)
@@ -145,11 +144,9 @@ def data_prepration(x): # preparing data for training and testing as we are goin
     return(x_features_train,x_features_test,x_labels_train,x_labels_test)
 
 def main():
-    data = pd.read_csv('dataset/trains.csv')
-    data = data.head(40000)
-    #datavisualisation(data)
+    data = pd.read_csv('dataset/train.csv')
+    datavisualisation(data)
     df = preprocessing(data)
-    #info(df)
     y = df['click']
     train, test = train_test_split(df, test_size = 0.3, stratify = y)
     train = imputation(train)
@@ -157,7 +154,6 @@ def main():
     train.reset_index(drop=True, inplace= True)
     test.reset_index(drop=True, inplace= True)
     train = deleteunnamed(train)
-    #info(train)
     ftrain = train
     features, ftrain = featureselection(ftrain)
     target = 'click'
@@ -187,7 +183,7 @@ def main():
         print()
         clf=SVC()
         model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
-        # here training for the undersample data but tatsing for whole data
+        # here training for the undersample data but testing for whole data
         print("_________________________________________________________________________________________")
     
     
@@ -207,7 +203,7 @@ def main():
         print()
         clf=GaussianNB()
         model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
-        # here training for the undersample data but tatsing for whole data
+        # here training for the undersample data but testing for whole data
         print("_________________________________________________________________________________________")
     
     #xgboost
@@ -226,7 +222,7 @@ def main():
         print()
         clf= xgboost.XGBClassifier(n_estimators=500, max_depth=8, learning_rate=0.015)
         model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
-        # here training for the undersample data but tatsing for whole data
+        # here training for the undersample data but testing for whole data
         print("_________________________________________________________________________________________")
     #after testing with 3 classifiers xgboost and svm comes prettywell
     #best classifier of propotion4
