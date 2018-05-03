@@ -118,8 +118,6 @@ def model(model,features_train,features_test,labels_train,labels_test):
     cnf_matrix=confusion_matrix(labels_test,pred)
     print("the recall for this model is :",cnf_matrix[1,1]/(cnf_matrix[1,1]+cnf_matrix[1,0]))
     print('accuracy :', accuracy)
-    print("\n")
-    print('cross validationscore :', accuracy)
     fig= plt.figure(figsize=(6,3))
     print("TP",cnf_matrix[1,1,]) 
     print("TN",cnf_matrix[0,0]) 
@@ -132,6 +130,7 @@ def model(model,features_train,features_test,labels_train,labels_test):
     plt.show()
     print("\n----------Classification Report------------------------------------")
     print(classification_report(labels_test,pred))
+
 
 def data_prepration(x):
     x_features= x.ix[:,x.columns != "click"]
@@ -154,6 +153,7 @@ def main():
     train.reset_index(drop=True, inplace= True)
     test.reset_index(drop=True, inplace= True)
     train = deleteunnamed(train)
+    test = deleteunnamed(test)
     ftrain = train
     features, ftrain = featureselection(ftrain)
     target = 'click'
@@ -226,18 +226,7 @@ def main():
         print("_________________________________________________________________________________________")
     #after testing with 3 classifiers xgboost and svm comes prettywell
     #best classifier of propotion4
-    print("svc")
-    Undersample_data = undersample(normal_indices,click_indices,4,data,Count_C)
-    print("------------------------------------------------------------")
-    print()
-    print("the model classification for 4* proportion")
-    print()
-    undersample_features_train,undersample_features_test,undersample_labels_train,undersample_labels_test=data_prepration(Undersample_data)
-    data_features_train,data_features_test,data_labels_train,data_labels_test=data_prepration(data) 
-    #the partion for whole data
-    print()
-    clf=SVC()
-    model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
+    
     print("xgboost")
     Undersample_data = undersample(normal_indices,click_indices,4,data,Count_C)
     print("------------------------------------------------------------")
@@ -250,8 +239,27 @@ def main():
     print()
     clf=xgboost.XGBClassifier(n_estimators=500, max_depth=8, learning_rate=0.015)
     model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
-
-
+    print("svc")
+    Undersample_data = undersample(normal_indices,click_indices,4,data,Count_C)
+    print("------------------------------------------------------------")
+    print()
+    print("the model classification for 4* proportion")
+    print()
+    undersample_features_train,undersample_features_test,undersample_labels_train,undersample_labels_test=data_prepration(Undersample_data)
+    data_features_train,data_features_test,data_labels_train,data_labels_test=data_prepration(data) 
+    #the partion for whole data
+    print()
+    clf=SVC()
+    model(clf,undersample_features_train,data_features_test,undersample_labels_train,data_labels_test)
+    #Evaluating accuracy on test set
+    tfeatures, ftest = featureselection(test)
+    print("Evaluating the accuracy on test set.")
+    test_y = ftest['click']
+    test_x = ftest[tfeatures]
+    pred=clf.predict(test_x)
+    accuracy = accuracy_score(test_y, pred)
+    print('accuracy :', accuracy)
+    
 
 
     
