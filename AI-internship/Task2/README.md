@@ -1,7 +1,7 @@
 # Predict Ad click
 
-Dataset
-![](https://raw.githubusercontent.com/sreehari1997/TCS-AI-Internship/AI-internship/Task2/Screen Shot 2018-04-26 at 10.49.25 PM.png)
+##Dataset
+![](https://github.com/sreehari1997/TCS-AI-Internship/blob/master/AI-internship/Task2/Screen%20Shot%202018-04-26%20at%2010.49.25%20PM.png)
 ## Features
 ### Imbalanced dataset
 ![](https://raw.githubusercontent.com/sreehari1997/TCS-AI-Internship/AI-internship/Task2/results/count.jpg)
